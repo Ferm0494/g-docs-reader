@@ -4,7 +4,7 @@ import { GoogleOAuth } from "../services/oauth/google/google.oauth.service";
 
 const app = express();
 
-app.get("/oauth15", (req, res) => {
+app.get("/", (req, res) => {
   res.writeHead(301, { Location: GoogleOAuth.generateAuthUrl() });
   res.end();
 });
