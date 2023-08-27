@@ -1,10 +1,10 @@
 import express from "express";
 import { google } from "googleapis";
 import { GoogleOAuth } from "../services/oauth/google/google.oauth.service";
-
+import { PublisherService } from "../services/pub/publisher.service";
 const app = express();
 
-app.get("/", (req, res) => {
+app.get("/", (_, res) => {
   res.writeHead(301, { Location: GoogleOAuth.generateAuthUrl() });
   res.end();
 });
@@ -29,7 +29,8 @@ app.get("/callback", async (req, res) => {
         const userInfo = await google
           .oauth2({ auth: authInstance, version: "v2" })
           .userinfo.get();
-        return res.json({ tokens, data: tokenData, userInfo: userInfo.data });
+        await PublisherService.publishNewUser(JSON.stringify({email: userInfo.data.email, refreshToken: tokens.refresh_token, accessToken: tokens.access_token}));
+        return res.json({message: 'OK', status: 200});
       } else {
         return res.status(401).json({ error: "Missing Scopes", status: 401 });
       }
