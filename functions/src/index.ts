@@ -60,7 +60,7 @@ export const newUser = onMessagePublished(
             undefined,
       });
     } catch (error) {
-      logger.error({error}, "Error occured");
+      logger.error("Error occured", {error});
     }
   }
 );
@@ -70,6 +70,7 @@ export const syncUserAuto = runWith({memory: "4GB"})
   .onRun(async (event) => {
     logger.log("Event", {event: event});
     await syncUsers();
+    logger.log("Synced users");
   });
 
 export const syncUserManual = runWith({memory: "4GB"}).https.onRequest(
