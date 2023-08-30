@@ -18,9 +18,12 @@
     "@google-cloud/functions-framework": "^3.3.0",
     "class-validator": "^0.14.0",
     "docs-markdown": "^1.2.0",
+    "firebase": "^10.3.0",
     "firebase-admin": "^11.8.0",
     "firebase-functions": "^4.4.1",
-    "gaxios": "^6.1.0"
+    "gaxios": "^6.1.0",
+    "google-auth-library": "^9.0.0",
+    "googleapis": "^126.0.1"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.12.0",

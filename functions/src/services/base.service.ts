@@ -6,6 +6,7 @@ interface EnvironmentVars {
   PROJECT_ID: string;
   NEW_USER_TOPIC: string;
   NODE_ENV: "production" | "development";
+  CALLBACK_URL: string;
   HOST: string;
 }
 
@@ -18,9 +19,9 @@ export class BaseService {
       "CLIENT_ID",
       "CLIENT_SECRET",
       "PROJECT_ID",
-      "NEW_USER_TOPIC",
       "NODE_ENV",
       "HOST",
+      "CALLBACK_URL",
     ];
     const configObj = config();
     const hasAllKeys = keys.every((key) => configObj[key]);

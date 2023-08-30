@@ -1,18 +1,13 @@
-import {IsString, IsNotEmpty} from "class-validator";
+import {IsEmail, IsString, IsNotEmpty} from "class-validator";
 
 export class CreateUserDto {
+  @IsEmail()
+    email?: string;
   @IsString()
   @IsNotEmpty()
-    email: string;
-  @IsString()
-  @IsNotEmpty()
-    accessToken: string;
-  @IsString()
-  @IsNotEmpty()
-    refreshToken: string;
-  constructor({email, accessToken, refreshToken}: CreateUserDto) {
+    refreshToken?: string;
+  constructor({email, refreshToken}: Partial<CreateUserDto>) {
     this.email = email;
-    this.accessToken = accessToken;
     this.refreshToken = refreshToken;
   }
 }

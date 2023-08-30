@@ -12,3 +12,5 @@ node_modules/
 # Env vars
 .runtimeconfig.json
 .env.yaml
+# Firebase local emulators logs
+*.log
