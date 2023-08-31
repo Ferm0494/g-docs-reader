@@ -1,0 +1,8 @@
+{
+  "CLIENT_ID": "YOUR-OAUTH_CLIENT_ID",
+  "CLIENT_SECRET": "YOUR_OAUTH_CLIENT_SECRET",
+  "PROJECT_ID": "YOUR_GOOGLE_PROJECT_ID",
+  "NODE_ENV": "development",
+  "HOST": "127.0.0.1",
+  "CALLBACK_URL": "http://127.0.0.1:4000/${YOUR_GOOGLE_PROJECT_ID}/us-central1/oauthCallback"
+}
