@@ -1,5 +1,4 @@
 import {GoogleApis, docs_v1} from "googleapis";
-import {googleDocsToMarkdown} from "docs-markdown";
 import {GaxiosResponse} from "gaxios";
 import {BaseService} from "./base.service";
 
@@ -16,7 +15,10 @@ export class DocsService extends BaseService {
   ) {
     return {
       id: doc.data.documentId as string,
-      markdown: googleDocsToMarkdown(doc.data),
+      markdown: doc.data.body?.content?.map((doc)=>
+        doc.paragraph?.elements?.map((element)=>
+          element.textRun?.content).join("")).join("\n"),
+      title: doc.data.title as string,
     };
   }
 }

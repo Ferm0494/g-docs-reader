@@ -5,7 +5,7 @@ import {
   collection,
   setDoc,
   getDoc,
-  // getDocs,
+  Timestamp,
   doc,
 } from "firebase/firestore";
 import {initializeApp} from "firebase/app";
@@ -53,10 +53,14 @@ export class FirestoreService extends BaseService {
   ) {
     const usersRef = this.getCollection("users");
     const docRef = collection(doc(usersRef, userMail), "docs");
+    const existingGdoc = await getDoc(doc(docRef, document.id));
     await setDoc(
       doc(docRef, document.id),
       {
         content: document.markdown,
+        title: document.title,
+        updatedAt: Timestamp.now(),
+        ...(!existingGdoc.exists() && {createdAt: Timestamp.now()}),
       },
       {merge: true}
     );
