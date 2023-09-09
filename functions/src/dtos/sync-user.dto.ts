@@ -7,8 +7,12 @@ export class SyncUserDto {
   @IsString()
     document: string;
 
-  constructor({email, document}: SyncUserDto) {
+  @IsNotEmpty()
+  @IsString()
+    userId: string;
+  constructor({email, document, userId}: SyncUserDto) {
     this.email = email;
     this.document = document;
+    this.userId = userId;
   }
 }

@@ -1,30 +1,33 @@
-import { useState } from 'react';
-import reactLogo from './assets/react.svg';
-import viteLogo from '/vite.svg';
-import './App.css';
+import { AuthContextProvider } from 'contexts/Auth';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { ROUTES } from 'routes';
 
 function App() {
-   const [count, setCount] = useState(0);
-
    return (
-      <>
-         <div>
-            <a href="https://vitejs.dev" target="_blank" rel="noreferrer">
-               <img src={viteLogo} className="logo" alt="Vite logo" />
-            </a>
-            <a href="https://react.dev" target="_blank" rel="noreferrer">
-               <img src={reactLogo} className="logo react" alt="React logo" />
-            </a>
-         </div>
-         <h1>Vite + React</h1>
-         <div className="card">
-            <button onClick={() => setCount((count) => count + 1)}>count is {count}</button>
-            <p>
-               Edit <code>src/App.tsx</code> and save to test HMR
-            </p>
-         </div>
-         <p className="read-the-docs">Click on the Vite and React logos to learn more</p>
-      </>
+      <BrowserRouter>
+         <AuthContextProvider>
+            {(authState) =>
+            // We wait to render the routes until we have the authState.user either null or a User.
+               authState.user !== undefined && (
+                  <Routes>
+                     {!authState.user && <Route path="*" element={ROUTES.login.element} />}
+                     {authState.user && !authState.selectedAccount && (
+                        <Route path="*" element={ROUTES.selectAccount.element} />
+                     )}
+                     { authState.selectedAccount && (
+                        <>
+                           <Route
+                              path={ROUTES.docs.path}
+                              element={ROUTES.docs.element}
+                           />
+                           <Route path={ROUTES.notFound.path} element={ROUTES.notFound.element} />
+                        </>
+                     )}
+                  </Routes>
+               )
+            }
+         </AuthContextProvider>
+      </BrowserRouter>
    );
 }
 

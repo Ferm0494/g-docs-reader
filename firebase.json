@@ -26,9 +26,6 @@
       "enabled": true,
       "port": 4002
     },
-    "authEmulator": {
-      "port": 4003
-    },
     "singleProjectMode": true,
     "auth": {
       "port": 4003

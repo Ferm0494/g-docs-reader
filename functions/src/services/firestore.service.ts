@@ -7,12 +7,15 @@ import {
   getDoc,
   Timestamp,
   doc,
+  getDocs,
 } from "firebase/firestore";
 import {initializeApp} from "firebase/app";
 import * as logger from "firebase-functions/logger";
 import {DocsService} from "./docs.service";
 import {BaseService} from "./base.service";
 import {CreateUserDto} from "../dtos/create-user.dto";
+import {SyncUserDto} from "../dtos/sync-user.dto";
+import {GetDocsDto} from "../dtos/get-docs.dto";
 
 type Collection = "users";
 export class FirestoreService extends BaseService {
@@ -28,31 +31,41 @@ export class FirestoreService extends BaseService {
     }
     return this.Singleton;
   }
-  static async getDoc(resource: Collection, key: string) {
-    const docRef = doc(FirestoreService.getInstance(), resource, key);
+  static getDoc(resource: Collection, key: string[] = []) {
+    const docRef = doc(FirestoreService.getInstance(), resource, ...key);
     return getDoc(docRef);
   }
-  static getCollection(resource: Collection) {
-    return collection(FirestoreService.getInstance(), resource);
+  static getCollection(resource: Collection, key: string[] = []) {
+    return collection(FirestoreService.getInstance(), resource, ...key);
   }
   static async addUser(user: Required<CreateUserDto>) {
     try {
       const usersRef = this.getCollection("users");
-      await setDoc(doc(usersRef, user.email), {
-        refreshToken: user.refreshToken,
-      });
+      const accountRef = collection(doc(usersRef, user.userId), "accounts");
+      await setDoc(
+        doc(accountRef, user.email),
+        {
+          refreshToken: user.refreshToken,
+        }
+      );
       logger.info("User added", {user: user.email});
     } catch (error) {
       logger.error("Error adding user", {user: user, error});
       throw error;
     }
   }
+  static async getUserAccountDocs({account: userMail, userId}: GetDocsDto) {
+    const usersRef = this.getCollection("users");
+    const docRef = collection(doc(usersRef, userId, "accounts", userMail), "docs");
+    const snapshot = await getDocs(docRef);
+    return snapshot.docs.map((doc) => ({...doc.data(), id: doc.id}));
+  }
   static async addDocToUser(
-    userMail: string,
+    {email: userMail, userId}: SyncUserDto,
     document: ReturnType<typeof DocsService.transformDocToMarkdown>
   ) {
     const usersRef = this.getCollection("users");
-    const docRef = collection(doc(usersRef, userMail), "docs");
+    const docRef = collection(doc(usersRef, userId, "accounts", userMail), "docs");
     const existingGdoc = await getDoc(doc(docRef, document.id));
     await setDoc(
       doc(docRef, document.id),

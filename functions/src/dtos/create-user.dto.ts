@@ -6,8 +6,12 @@ export class CreateUserDto {
   @IsString()
   @IsNotEmpty()
     refreshToken?: string;
-  constructor({email, refreshToken}: Partial<CreateUserDto>) {
+  @IsString()
+  @IsNotEmpty()
+    userId?: string;
+  constructor({email, refreshToken, userId}: Partial<CreateUserDto>) {
     this.email = email;
     this.refreshToken = refreshToken;
+    this.userId = userId;
   }
 }
