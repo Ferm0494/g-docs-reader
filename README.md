@@ -33,10 +33,10 @@
 
 - How to run it, in the root project run `pnpm install`;
 - Make sure you have an .env within your root directory with the following values:
- - `[
+- `[
      "VITE_FIREBASE_CONFIG",
      "VITE_FIREBASE_AUTH_EMULATOR_HOST",
-     "VITE_CLOUD_FUNCTIONS_HOST",
+     "VITE_CLOUD_FUNCTIONS_HOST"
     ];`
 
 - Start the emulators with `firebase emulators:start`
