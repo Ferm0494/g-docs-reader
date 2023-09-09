@@ -9,6 +9,7 @@ import {SyncUserDto} from "./dtos/sync-user.dto";
 import {DocsService} from "./services/docs.service";
 import {CustomExceptions} from "./contants/custom-exceptions";
 import {GetDocsDto} from "./dtos/get-docs.dto";
+import { BaseService } from "./services/base.service";
 
 const newUser = async (newUser: CreateUserDto) => {
   const newUserDto = new CreateUserDto(newUser);
@@ -112,9 +113,8 @@ export const oauthCallback = onRequest(async (req, res) => {
       email: userInfo.data.email || undefined,
       refreshToken: tokens.refresh_token || undefined,
     });
-    // TODO: Refactor this.
     res.writeHead(301, {
-      Location: `http://localhost:5173?email=${userInfo.data.email}`,
+      Location: `${BaseService.getConfig().FE_HOST}?email=${userInfo.data.email}`,
     });
     res.end();
   } catch (error) {

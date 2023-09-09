@@ -8,6 +8,7 @@ interface EnvironmentVars {
   NODE_ENV: "production" | "development";
   CALLBACK_URL: string;
   HOST: string;
+  FE_HOST: string;
 }
 
 export class BaseService {
@@ -22,6 +23,7 @@ export class BaseService {
       "NODE_ENV",
       "HOST",
       "CALLBACK_URL",
+      "FE_HOST",
     ];
     const configObj = config();
     const hasAllKeys = keys.every((key) => configObj[key]);
